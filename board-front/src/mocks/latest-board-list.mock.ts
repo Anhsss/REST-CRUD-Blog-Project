@@ -49,6 +49,6 @@ const latestBoardListMock: BoardListItem[] = [
         "writerNickname": "안녕하세요나는주코야키",
         "writerProfileImage": null,
       }
-]
+];
 
 export default latestBoardListMock;
