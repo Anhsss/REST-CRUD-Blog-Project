@@ -10,7 +10,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
  return (
     <div className='inputbox'>
         <div className='inputbox-label'>{'비밀번호*'}</div>
-        <div className='inputbox-container'>
+        <div className='inputbox-container-error'>
             <input className='input' />
             <div className='icon-button'>
                 <div className='icon eye-light-off-icon'></div>
