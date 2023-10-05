@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { commentListMock, favoriteListMock, latestBoardListMock, top3BoardListMock} from 'mocks';
 import Top3Item from 'components/Top3Item';
@@ -7,6 +7,9 @@ import FavoriteItem from 'components/FavoriteItem';
 import InputBox from 'components/InputBox';
 
 function App() {
+
+  const [value, setValue] = useState<string>('');
+
   return (
    <>
        {/* latestBoardListMock.map(boardListItem => <BoardItem boardListItem={boardListItem} />) */}
