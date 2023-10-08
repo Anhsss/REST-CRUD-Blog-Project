@@ -25,7 +25,7 @@ interface Props {
   const { label, type, placeholder, value, error, icon, message } = props;
   const { setValue, onButtonClick, onKeyDown } = props;
 
-  
+  //          event handler: input 값 변경 이벤트 처리 함수        //
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       setValue(value);
