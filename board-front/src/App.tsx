@@ -5,7 +5,7 @@ import './App.css';
 ////import CommentItem from 'components/CommentItem';
 ////import FavoriteItem from 'components/FavoriteItem';
 ////import InputBox from 'components/InputBox';
-////import Footer from 'layouts/Footer';
+import Footer from 'layouts/Footer';
 
 function App() {
 
