@@ -1,6 +1,5 @@
 package com.sooya.boardback.service.implement;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,7 +44,7 @@ public class AuthServiceImplement implements AuthService {
             dto.setPassword(encodedPassword);
 
             UserEntity userEntity = new UserEntity(dto);
-
+            userRepository.save(userEntity);
 
 
         } catch (Exception exception) {
