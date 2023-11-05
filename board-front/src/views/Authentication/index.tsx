@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './style.css';
 
 //          component: 인증 화면 컴포넌트          //
 export default function Authentication() {
+
+  //          state: 화면 상태          //
+  const [view, setView] = useState<'sign-in' | 'sign-up'>('sign-in');
 
   //          component: sign in card 컴포넌트          //
   const SignInCard = () => {
@@ -35,7 +38,8 @@ export default function Authentication() {
             </div>
           </div>
         </div>
-        <div></div>
+        {view === 'sign-in' && <SignInCard />}
+        {view === 'sign-up' && <SignUpCard />}
       </div>
     </div>
   )
