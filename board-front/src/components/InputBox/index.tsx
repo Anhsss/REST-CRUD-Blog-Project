@@ -30,7 +30,6 @@ interface Props {
       const { value } = event.target;
       setValue(value);
   };
-
   //          event handler: input 키 이벤트 처리 함수        //
   const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
     if(!onKeyDown) return;
@@ -44,7 +43,7 @@ interface Props {
           <div className={error ? 'inputbox-container-error' : 'inputbox-container'}>
             <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChangeHandler} onKeyDown={onKeyDownHandler} />
             {onButtonClick !== undefined && 
-            <div className='icon-button'>
+            <div className='icon-button' onClick={onButtonClick}>
             {icon !== undefined && <div className={`icon ${icon}`}></div>}
           </div>
           }
