@@ -71,7 +71,6 @@ export default function Authentication() {
       const { value } = event.target;
       setPassword(value);
     }
-
     //          event handler: 로그인 버튼 클릭 이벤트 처리         //
     const onSignInButtonClickHandler = () => {
       const requestBody: SignInRequestDto = { email, password };
@@ -136,9 +135,72 @@ export default function Authentication() {
   //          component: sign up card 컴포넌트          //
   const SignUpCard = () => {
 
+    //          state: 이메일 요소 참조 상태         //
+    const emailRef = useRef<HTMLInputElement | null>(null);
+    //          state: 패스워드 요소 참조 상태         //
+    const passwordRef = useRef<HTMLInputElement | null>(null);
+    //          state: 패스워드 확인 요소 참조 상태         //
+    const passwordCheckRef = useRef<HTMLInputElement | null>(null);    
+    
+    //          state: 페이지 번호 상태         //
+    const [page, setPage] = useState<1 | 2>(1);
+
+    //          state: 이메일 상태         //
+    const [email, setEmail] = useState<string>('');
+    //          state:  패스워드 상태         //
+    const [password, setPassword] = useState<string>('');
+    //          state: 패스워드 확인 상태         //
+    const [passwordCheck, setPasswordCheck] = useState<string>('');
+
+    //          state: 패스워드 타입 상태         //
+    const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
+    //          state: 패스워드 확인 타입 상태         //
+    const [passwordCheckType, setPasswordCheckType] = useState<'text' | 'password'>('password');
+
+    //          state: 이메일 에러 상태         //
+    const [isEmailError, setEmailError] = useState<boolean>(false);
+    //          state: 패스워드 에러 상태         //
+    const [isPasswordError, setPasswordError] = useState<boolean>(false);
+    //          state: 패스워드 확인 에러 상태         //
+    const [isPasswordCheckError, setPasswordCheckError] = useState<boolean>(false);
+
+    //          event handler: 이메일 변경 이벤트 처리         //
+    const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setEmail(value);
+    }
+    //          event handler: 패스워드 변경 이벤트 처리         //
+    const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setPassword(value);
+    }
+    //          event handler: 패스워드 확인 변경 이벤트 처리         //
+    const onPasswordCheckChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setPasswordCheck(value);
+    }
+
     //          render: sign Up card 컴포넌트 렌더링          //
     return (
-      <div className='auth-card'></div>
+      <div className='auth-card'>
+        <div className='auth-card-box'>
+          <div className='auth-card-top'>
+            <div className='auth-card-title-box'>
+              <div className='auth-card-title'>{'회원가입'}</div>
+              <div className='auth-card-page'>{`${page}/2`}</div>
+            </div>
+            <InputBox ref={emailRef} type='text' placeholder='이메일 주소를 입력해주세요.' value={email} onChange={onEmailChangeHandler} error={isEmailError} />
+            <InputBox ref={passwordRef} type={passwordType} placeholder='비밀번호를 입력해주세요.' value={password} onChange={onPasswordChangeHandler} error={isPasswordError} />
+            <InputBox ref={passwordCheckRef} type={passwordCheckType} placeholder='비밀번호를 다시 입력해주세요.' value={passwordCheck} onChange={onPasswordCheckChangeHandler} error={isPasswordCheckError} />
+          </div>
+          <div className='auth-card-bottom'>
+            <div className='black-large-full-button'>{'다음 단계'}</div>
+            <div className='auth-description-box'>
+              <div className='auth-description'>{'이미 계정이 있으신가요? '}<span className='auth-description-link'>{'로그인'}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   };
 
