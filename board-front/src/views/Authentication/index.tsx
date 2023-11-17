@@ -164,6 +164,18 @@ export default function Authentication() {
     //          state: 패스워드 확인 에러 상태         //
     const [isPasswordCheckError, setPasswordCheckError] = useState<boolean>(false);
 
+    //          state: 이메일 에러 메세지 상태         //
+    const [emailErrorMessage, setEmailErrorMessage] = useState<string>('');
+    //          state: 패스워드 에러 메세지 상태         //
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>('');
+    //          state: 패스워드 확인 에러 메세지 상태         //
+    const [passwordCheckErrorMessage, setPasswordCheckErrorMessage] = useState<string>('');
+
+    //          state: 패스워드 버튼 아이콘 상태         //
+    const [passwordButtonIcon, setPasswordButtonIcon] = useState<'eye-light-off-icon' | 'eye-light-on-icon'>('eye-light-off-icon');
+    //          state: 패스워드 확인 버튼 아이콘 상태         //
+    const [passwordCheckButtonIcon, setPasswordCheckButtonIcon] = useState<'eye-light-off-icon' | 'eye-light-on-icon'>('eye-light-off-icon');
+
     //          event handler: 이메일 변경 이벤트 처리         //
     const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
@@ -179,6 +191,66 @@ export default function Authentication() {
       const { value } = event.target;
       setPasswordCheck(value);
     }
+    //          event handler: 패스워드 버튼 클릭 이벤트 처리         //
+    const onPasswordButtonClickHandler = () => {
+      if (passwordButtonIcon === 'eye-light-off-icon') {
+        setPasswordButtonIcon('eye-light-on-icon');
+        setPasswordType('text');
+      }
+      else {
+        setPasswordButtonIcon('eye-light-off-icon');
+        setPasswordType('password');        
+      }
+    }
+    //          event handler: 패스워드 확인 버튼 클릭 이벤트 처리         //
+    const onPasswordCheckButtonClickHandler = () => {
+      if (passwordButtonIcon === 'eye-light-off-icon') {
+        setPasswordCheckButtonIcon('eye-light-on-icon');
+        setPasswordCheckType('text');
+      }
+      else {
+        setPasswordCheckButtonIcon('eye-light-off-icon');
+        setPasswordCheckType('password');        
+      }
+    }
+    //          event handler: 다음 단계 버튼 클릭 이벤트 처리         //
+    const onNextButtonClickHandler = () => {
+      const emailPattern = /^[a-zA-Z0-9]*@([-.]?[a-zA-Z0-9])*\.[a-zA-Z]{2,4}$/;
+      const isEmailPattern = emailPattern.test(email);
+      if (!isEmailPattern) {
+        setEmailError(true);
+        setEmailErrorMessage('이메일 주소 포맷이 맞지 않습니다.')
+      }
+      const isCheckedPassword = password.trim().length > 8;
+      if (!isCheckedPassword) {
+        setPasswordError(true);
+        setPasswordErrorMessage('비밀번호는 8자 이상 입력해주세요.');
+      }
+      const isEqualPassword = password === passwordCheck;
+      if (!isEqualPassword) {
+        setPasswordCheckError(true);
+        setPasswordCheckErrorMessage('비밀번호가 일치하지않습니다.');
+      }
+      if (!isEmailPattern || !isCheckedPassword || !isEqualPassword) return;
+      setPage(2);
+    }
+    //          event handler: 이메일 키 다운 이벤트 처리         //
+    const onEmailKeyDownHandler =(event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key !== 'Enter') return;
+      if (!passwordRef.current) return;
+      passwordRef.current.focus();
+    }
+    //          event handler: 패스워드 키 다운 이벤트 처리         //
+    const onPasswordKeyDownHandler =(event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key !== 'Enter') return;
+      if (!passwordCheckRef.current) return;
+      passwordCheckRef.current.focus();
+    }
+    //          event handler: 패스워드 확인 키 다운 이벤트 처리         //
+    const onPasswordCheckKeyDownHandler =(event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key !== 'Enter') return;
+      onNextButtonClickHandler();
+    }
 
     //          render: sign Up card 컴포넌트 렌더링          //
     return (
@@ -189,12 +261,12 @@ export default function Authentication() {
               <div className='auth-card-title'>{'회원가입'}</div>
               <div className='auth-card-page'>{`${page}/2`}</div>
             </div>
-            <InputBox ref={emailRef} type='text' placeholder='이메일 주소를 입력해주세요.' value={email} onChange={onEmailChangeHandler} error={isEmailError} />
-            <InputBox ref={passwordRef} type={passwordType} placeholder='비밀번호를 입력해주세요.' value={password} onChange={onPasswordChangeHandler} error={isPasswordError} />
-            <InputBox ref={passwordCheckRef} type={passwordCheckType} placeholder='비밀번호를 다시 입력해주세요.' value={passwordCheck} onChange={onPasswordCheckChangeHandler} error={isPasswordCheckError} />
+            <InputBox ref={emailRef} label='이메일 주소*' type='text' placeholder='이메일 주소를 입력해주세요.' value={email} onChange={onEmailChangeHandler} error={isEmailError} message={emailErrorMessage} onKeyDown={onEmailKeyDownHandler} />
+            <InputBox ref={passwordRef} label='비밀번호*' type={passwordType} placeholder='비밀번호를 입력해주세요.' value={password} onChange={onPasswordChangeHandler} error={isPasswordError} message={passwordErrorMessage} icon={passwordButtonIcon} onButtonClick={onPasswordButtonClickHandler} onKeyDown={onPasswordKeyDownHandler} />
+            <InputBox ref={passwordCheckRef} label='비밀번호 확인*' type={passwordCheckType} placeholder='비밀번호를 다시 입력해주세요.' value={passwordCheck} onChange={onPasswordCheckChangeHandler} error={isPasswordCheckError} message={passwordCheckErrorMessage} icon={passwordCheckButtonIcon} onButtonClick={onPasswordCheckButtonClickHandler} onKeyDown={onPasswordCheckKeyDownHandler} />
           </div>
           <div className='auth-card-bottom'>
-            <div className='black-large-full-button'>{'다음 단계'}</div>
+            <div className='black-large-full-button' onClick={onNextButtonClickHandler}>{'다음 단계'}</div>
             <div className='auth-description-box'>
               <div className='auth-description'>{'이미 계정이 있으신가요? '}<span className='auth-description-link'>{'로그인'}</span></div>
             </div>
